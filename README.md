@@ -3,10 +3,10 @@
 ## TODO
 
 - [x] Deploy (vercel)
-- [ ] Basic ui with mocked data
+- [x] Basic ui with mocked data
 - [ ] Create map view
-- [ ] Set up database (vercel postgres)
-- [ ] Attach database to ui
+- [x] Set up database (vercel postgres)
+- [x] Attach database to ui
 - [ ] Add authentication
 - [ ] Add events upload
 - [ ] Error management (w/ Sentry)
