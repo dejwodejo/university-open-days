@@ -1,8 +1,9 @@
 import "~/styles/globals.css";
-
 import { inter, playfair_display } from "~/styles/fonts";
+
 import { type ReactNode } from "react";
-import Image from "next/image";
+import { ClerkProvider } from "@clerk/nextjs";
+import { plPL } from "@clerk/localizations";
 
 export const metadata = {
   title: "Dni otwarte Uniwersytetu Zielonogórskiego",
@@ -10,66 +11,23 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const navElements = [
-  {
-    title: "Uczelnia",
-    iconPath: "/uz-logo.png",
-    width: 100,
-    height: 60,
-    url: "https://uz.zgora.pl/",
-  },
-  {
-    title: "Rekrutacja",
-    iconPath: "/recrutation-icon.png",
-    url: "https://rekrutacja.uz.zgora.pl/",
-  },
-  {
-    title: "Mapa wydarzenia",
-    iconPath: "/map-icon.png",
-    url: "#",
-  },
-];
-
-function Navbar() {
-  return (
-    <nav>
-      <h1
-        className={`${playfair_display.className} my-8 text-center text-4xl font-bold lg:text-5xl`}
-      >
-        Dni Otwarte Uniwersytetu Zielonogórskiego
-      </h1>
-      <div className="mx-2 flex w-full flex-row flex-wrap justify-center">
-        {navElements.map(({ title, iconPath, width, height, url }, index) => (
-          <div
-            key={index + 1}
-            className="mx-3 flex w-1/4 min-w-24 flex-col items-center justify-between rounded-lg p-5 text-center shadow-md hover:bg-gray-300"
-          >
-            <Image
-              width={width ? width : 64}
-              height={height ? height : 64}
-              className="h-16 w-16"
-              src={iconPath}
-              alt={title}
-            ></Image>
-            <h4>{title}</h4>
-          </div>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pl">
-      <body className="font-sans">
-        <div
-          className={`mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center ${inter.className}`}
-        >
-          <Navbar />
-          {children}
-        </div>
-      </body>
-    </html>
+    <ClerkProvider localization={plPL}>
+      <html lang="pl">
+        <body className="font-sans">
+          <h1
+            className={`${playfair_display.className} my-8 text-center text-4xl font-bold lg:text-5xl`}
+          >
+            {"Dni Otwarte Uniwersytetu Zielonogórskiego"}
+          </h1>
+          <main
+            className={`mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center ${inter.className}`}
+          >
+            {children}
+          </main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
