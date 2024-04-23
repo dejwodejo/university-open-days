@@ -1,8 +1,8 @@
 import "~/styles/globals.css";
 
-import Image from "next/image";
-import { inter, playfair_display } from "~/app/fonts";
+import { inter, playfair_display } from "~/styles/fonts";
 import { type ReactNode } from "react";
+import Image from "next/image";
 
 export const metadata = {
   title: "Dni otwarte Uniwersytetu Zielonogórskiego",
@@ -30,7 +30,7 @@ const navElements = [
   },
 ];
 
-function Nav() {
+function Navbar() {
   return (
     <nav>
       <h1
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div
           className={`mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center ${inter.className}`}
         >
-          <Nav />
+          <Navbar />
           {children}
         </div>
       </body>
