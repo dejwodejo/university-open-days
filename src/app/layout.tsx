@@ -2,8 +2,6 @@ import "~/styles/globals.css";
 import { inter, playfair_display } from "~/styles/fonts";
 
 import { type ReactNode } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
-import { plPL } from "@clerk/localizations";
 
 export const metadata = {
   title: "Dni otwarte Uniwersytetu Zielonogórskiego",
@@ -13,21 +11,19 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <ClerkProvider localization={plPL}>
-      <html lang="pl">
-        <body className="font-sans">
-          <h1
-            className={`${playfair_display.className} my-8 text-center text-4xl font-bold lg:text-5xl`}
-          >
-            {"Dni Otwarte Uniwersytetu Zielonogórskiego"}
-          </h1>
-          <main
-            className={`mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center ${inter.className}`}
-          >
-            {children}
-          </main>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="pl">
+      <body className="font-sans">
+        <h1
+          className={`${playfair_display.className} my-8 text-center text-4xl font-bold lg:text-5xl`}
+        >
+          {"Dni Otwarte Uniwersytetu Zielonogórskiego"}
+        </h1>
+        <main
+          className={`mx-auto flex max-w-5xl flex-col items-center justify-center ${inter.className}`}
+        >
+          {children}
+        </main>
+      </body>
+    </html>
   );
 }
