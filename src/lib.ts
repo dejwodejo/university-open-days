@@ -4,25 +4,26 @@ import { cookies } from "next/headers";
 import { type JWTPayload, jwtVerify, SignJWT } from "jose";
 import { type NextRequest, NextResponse } from "next/server";
 
-const secretKey = "MOVE_THIS_SHIT_TO_ENV";
-const key = new TextEncoder().encode(secretKey);
-
 interface UserSession {
-  user: {
-    email?: string;
-    phoneNr?: string;
-  };
+  contact: string;
   expires: Date;
 }
 
+const secretKey = "MOVE_THIS_SHIT_TO_ENV";
+const key = new TextEncoder().encode(secretKey);
+
+const MILLISECONDS = 1000;
+const SECONDS = 60;
+const MINUTES = 10;
+
 export async function encrypt(payload: UserSession): Promise<string> {
   return new SignJWT({
-    user: payload.user,
+    contact: payload.contact,
     expires: payload.expires.toISOString(),
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("10 sec from now")
+    .setExpirationTime("10m")
     .sign(key);
 }
 
@@ -33,18 +34,9 @@ export async function decrypt(input: string): Promise<JWTPayload> {
   return payload;
 }
 
-export async function login(formData: FormData) {
-  const email = formData.get("email");
-  const phoneNr = formData.get("phoneNr");
-
-  let user;
-
-  if (typeof email === "string") user = { email };
-  else if (typeof phoneNr === "string") user = { phoneNr };
-  else throw new Error("Contact wasn't provided");
-
-  const expires = new Date(Date.now() + 10 * 1000);
-  const session = await encrypt({ user, expires });
+export async function assignSessionToken(contact: string) {
+  const expires = new Date(Date.now() + MINUTES * SECONDS * MILLISECONDS);
+  const session = await encrypt({ contact, expires });
 
   cookies().set("session", session, { expires, httpOnly: true });
 }

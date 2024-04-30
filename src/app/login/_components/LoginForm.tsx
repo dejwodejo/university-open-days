@@ -57,8 +57,6 @@ export default function LoginForm({ loginType }: LoginFormProps) {
           required
         />
 
-        {state?.errors?.email && <p>{state.errors.email}</p>}
-
         <button
           type="submit"
           disabled={isButtonDisabled}

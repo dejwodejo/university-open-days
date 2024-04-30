@@ -1,6 +1,15 @@
 "use server";
 
-import { EmailLoginSchema, type LoginFormState } from "~/lib/definitions";
+import {
+  type AuthCode,
+  EmailLoginSchema,
+  type LoginFormState,
+} from "~/lib/definitions";
+import {
+  createContactAuthCode,
+  getContactAuthCode,
+} from "~/actions/authCodesHandler";
+import { redirect } from "next/navigation";
 import sendEmail from "~/actions/sendEmail";
 
 export default async function loginHandler(
@@ -11,17 +20,25 @@ export default async function loginHandler(
     email: formData.get("email"),
   });
 
-  if (!validatedLoginForm.success) {
-    return {
-      errors: validatedLoginForm.error.flatten().fieldErrors,
-    };
-  }
+  if (!validatedLoginForm.success)
+    return { errors: validatedLoginForm.error.flatten().fieldErrors };
+  const { email } = validatedLoginForm.data;
+
+  const authCodeForContact: AuthCode | null = await getContactAuthCode(email);
+
+  if (authCodeForContact) return { errors: "You have been sent an email." };
 
   const authCode = generateSixDigits();
 
-  const emailSent = await sendEmail(validatedLoginForm.data.email, authCode);
+  await sendAuthCodeViaEmail(email, authCode);
 
-  console.log(emailSent);
+  return redirect("/auth?email=" + email);
+}
+
+async function sendAuthCodeViaEmail(email: string, authCode: string) {
+  await createContactAuthCode(email, authCode);
+
+  return sendEmail(email, authCode);
 }
 
 function generateSixDigits(): string {

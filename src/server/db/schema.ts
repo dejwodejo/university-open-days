@@ -14,6 +14,13 @@ export const createTable = pgTableCreator(
 
 export const userTypeEnum = pgEnum("user_type", ["student", "teacher"]);
 
+export const authCodes = createTable("auth_codes", {
+  id: serial("id").primaryKey(),
+  authCode: varchar("auth_code", { length: 6 }).notNull(),
+  contact: varchar("contact", { length: 100 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const users = createTable("users", {
   id: serial("id").primaryKey(),
   type: userTypeEnum("user_type"),
@@ -45,11 +52,12 @@ export const cities = createTable("cities", {
   regionId: integer("region_id"),
 });
 
-export const cityRelations = relations(cities, ({ one }) => ({
+export const cityRelations = relations(cities, ({ one, many }) => ({
   region: one(regions, {
     fields: [cities.regionId],
     references: [regions.id],
   }),
+  schools: many(schools),
 }));
 
 export const schools = createTable("schools", {

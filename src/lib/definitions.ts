@@ -18,3 +18,12 @@ export type LoginFormState =
       message?: string;
     }
   | undefined;
+
+const AuthCodeSchema = z.object({
+  id: z.number().int(),
+  authCode: z.string().length(6),
+  contact: z.string().max(100),
+  createdAt: z.date(),
+});
+
+export type AuthCode = z.infer<typeof AuthCodeSchema>;
