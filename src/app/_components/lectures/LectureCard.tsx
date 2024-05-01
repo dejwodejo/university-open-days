@@ -7,8 +7,6 @@ interface LectureCardProps {
   description: string;
   start: Date;
   end: Date;
-  floor: number;
-  number: string;
 }
 
 export default function LectureCard({
@@ -18,8 +16,6 @@ export default function LectureCard({
   description,
   start,
   end,
-  floor,
-  number,
 }: LectureCardProps) {
   return (
     <div className="relative mb-4 flex min-w-[400px] flex-col rounded-2xl border-2 border-black p-4">
@@ -52,7 +48,7 @@ export default function LectureCard({
         </div>
         <div className="my-2 flex items-center">
           <img src={"/map-pin-icon.png"} className={"mr-2 size-6"} />
-          <p>{"Piętro " + floor + " sala " + number}</p>
+          <p>{"Piętro " + 2 + " sala " + 2137}</p>
         </div>
       </div>
     </div>

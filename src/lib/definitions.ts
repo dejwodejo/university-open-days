@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-export const PhoneNrLoginSchema = z.object({
-  phoneNr: z.string().trim().length(9),
-});
-
 export const EmailLoginSchema = z.object({
   email: z.string().trim().email(),
 });
@@ -27,3 +23,38 @@ const AuthCodeSchema = z.object({
 });
 
 export type AuthCode = z.infer<typeof AuthCodeSchema>;
+
+// --------- USER
+
+export enum UserTypes {
+  STUDENT = "Uczeń",
+  TEACHER = "Nauczyciel",
+}
+
+export interface User {
+  id: number;
+  email: string | null;
+  phoneNr: string | null;
+  createdAt: Date;
+}
+
+// --------- ADDRESS
+
+export interface Region {
+  id: number;
+  name: string;
+  cities: City[];
+}
+
+export interface City {
+  id: number;
+  name: string;
+  regionId: number;
+  schools: School[];
+}
+
+export interface School {
+  id: number;
+  name: string;
+  cityId: number;
+}

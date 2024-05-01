@@ -38,6 +38,7 @@ export async function assignSessionToken(contact: string) {
   const expires = new Date(Date.now() + MINUTES * SECONDS * MILLISECONDS);
   const session = await encrypt({ contact, expires });
 
+  cookies().set("contact", contact);
   cookies().set("session", session, { expires, httpOnly: true });
 }
 

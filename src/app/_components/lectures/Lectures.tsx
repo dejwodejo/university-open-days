@@ -14,56 +14,32 @@ export default function Lectures({ lectures }: { lectures: Lecture[] }) {
         <div className="flex w-1/2 flex-col gap-4">
           {lectures
             .slice(0, Math.ceil(lectures.length / 2))
-            .map(
-              ({
-                title,
-                description,
-                type,
-                start,
-                end,
-                authors,
-                room: { floor, number },
-              }) => (
-                <LectureCard
-                  key={`lecture_${title}`}
-                  type={type}
-                  title={title}
-                  authors={authors}
-                  description={description}
-                  start={start}
-                  end={end}
-                  floor={floor}
-                  number={number}
-                />
-              ),
-            )}
+            .map(({ title, description, type, start, end, authors }) => (
+              <LectureCard
+                key={`lecture_${title}`}
+                type={type}
+                title={title}
+                authors={authors}
+                description={description}
+                start={start}
+                end={end}
+              />
+            ))}
         </div>
         <div className="flex w-1/2 flex-col gap-4">
           {lectures
             .slice(Math.ceil(lectures.length / 2))
-            .map(
-              ({
-                title,
-                description,
-                type,
-                start,
-                end,
-                authors,
-                room: { floor, number },
-              }) => (
-                <LectureCard
-                  key={`lecture_${title}`}
-                  type={type}
-                  title={title}
-                  authors={authors}
-                  description={description}
-                  start={start}
-                  end={end}
-                  floor={floor}
-                  number={number}
-                />
-              ),
-            )}
+            .map(({ title, description, type, start, end, authors }) => (
+              <LectureCard
+                key={`lecture_${title}`}
+                type={type}
+                title={title}
+                authors={authors}
+                description={description}
+                start={start}
+                end={end}
+              />
+            ))}
         </div>
       </div>
     </div>
