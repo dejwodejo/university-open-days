@@ -14,18 +14,36 @@ export const createTable = pgTableCreator(
 
 export const userTypeEnum = pgEnum("user_type", ["student", "teacher"]);
 
+export const authCodes = createTable("auth_codes", {
+  id: serial("id").primaryKey(),
+  authCode: varchar("auth_code", { length: 6 }).notNull(),
+  contact: varchar("contact", { length: 100 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const users = createTable("users", {
   id: serial("id").primaryKey(),
-  type: userTypeEnum("user_type"),
   email: varchar("email", { length: 255 }).unique(),
   phoneNr: varchar("phone_nr", { length: 13 }).unique(),
-  schoolId: integer("school_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const userRelations = relations(users, ({ one }) => ({
+  form: one(forms),
+}));
+
+export const forms = createTable("forms", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
+  type: userTypeEnum("user_type").notNull(),
+  schoolId: integer("school_id").notNull(),
+});
+
+export const formRelations = relations(forms, ({ one }) => ({
   school: one(schools, {
-    fields: [users.schoolId],
+    fields: [forms.schoolId],
     references: [schools.id],
   }),
 }));
@@ -42,20 +60,21 @@ export const regionRelations = relations(regions, ({ many }) => ({
 export const cities = createTable("cities", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  regionId: integer("region_id"),
+  regionId: integer("region_id").notNull(),
 });
 
-export const cityRelations = relations(cities, ({ one }) => ({
+export const cityRelations = relations(cities, ({ one, many }) => ({
   region: one(regions, {
     fields: [cities.regionId],
     references: [regions.id],
   }),
+  schools: many(schools),
 }));
 
 export const schools = createTable("schools", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  cityId: integer("city_id"),
+  cityId: integer("city_id").notNull(),
 });
 
 export const schoolRelations = relations(schools, ({ one, many }) => ({
@@ -63,7 +82,7 @@ export const schoolRelations = relations(schools, ({ one, many }) => ({
     fields: [schools.cityId],
     references: [cities.id],
   }),
-  users: many(users),
+  forms: many(forms),
 }));
 
 export const campuses = createTable("campuses", {
@@ -77,7 +96,7 @@ export const campusRelations = relations(campuses, ({ many }) => ({
 export const buildings = createTable("buildings", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  campusName: varchar("campus_name"),
+  campusName: varchar("campus_name").notNull(),
 });
 
 export const buildingRelations = relations(buildings, ({ one, many }) => ({
@@ -92,7 +111,7 @@ export const rooms = createTable("rooms", {
   id: serial("id").primaryKey(),
   number: varchar("number", { length: 50 }).notNull(),
   floor: integer("floor").notNull(),
-  buildingId: integer("building_id"),
+  buildingId: integer("building_id").notNull(),
 });
 
 export const roomRelations = relations(rooms, ({ one, many }) => ({
