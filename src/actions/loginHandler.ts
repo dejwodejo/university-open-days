@@ -1,10 +1,6 @@
 "use server";
 
-import {
-  type AuthCode,
-  EmailLoginSchema,
-  type LoginFormState,
-} from "~/lib/definitions";
+import { type AuthCode, EmailLoginSchema } from "~/lib/definitions";
 import {
   createContactAuthCode,
   getContactAuthCode,
@@ -12,10 +8,7 @@ import {
 import { redirect } from "next/navigation";
 import sendEmail from "~/actions/sendEmail";
 
-export default async function loginHandler(
-  login: LoginFormState,
-  formData: FormData,
-) {
+export default async function loginHandler(prevState: any, formData: FormData) {
   const validatedLoginForm = EmailLoginSchema.safeParse({
     email: formData.get("email"),
   });

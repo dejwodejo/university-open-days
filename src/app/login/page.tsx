@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { oswald, playfair_display } from "~/styles/fonts";
-import LoginForm from "~/app/login/_components/LoginForm";
+import { LoginForm } from "~/app/_components/LoginForm";
 
 export default function LoginPage() {
   const [loginWithEmail, setLoginWithEmail] = useState<boolean>(true);

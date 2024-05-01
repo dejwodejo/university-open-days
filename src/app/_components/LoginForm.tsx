@@ -4,12 +4,14 @@ import { useFormState } from "react-dom";
 import { type ChangeEvent, useState } from "react";
 import loginHandler from "~/actions/loginHandler";
 
+export const dynamic = "force-dynamic";
+
 interface LoginFormProps {
   loginType: "email" | "phoneNr";
 }
 
-export default function LoginForm({ loginType }: LoginFormProps) {
-  const [state, action] = useFormState(loginHandler, undefined);
+export function LoginForm({ loginType }: LoginFormProps) {
+  const [state, action] = useFormState(loginHandler, null);
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -47,7 +49,6 @@ export default function LoginForm({ loginType }: LoginFormProps) {
           name={loginType}
           type={inputMode}
           placeholder={placeholder}
-          pattern={pattern}
           onChange={handleInputChange}
           minLength={minLength}
           maxLength={maxLength}
