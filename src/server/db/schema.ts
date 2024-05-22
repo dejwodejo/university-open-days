@@ -21,6 +21,13 @@ export const authCodes = createTable("auth_codes", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const adminPassword = createTable("admin_password", {
+  id: serial("id").primaryKey(),
+  label: varchar("admin_label", { length: 255 }),
+  name: varchar("admin_name", { length: 20 }).unique(),
+  password: varchar("password", { length: 20 })
+})
+
 export const users = createTable("users", {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).unique(),
