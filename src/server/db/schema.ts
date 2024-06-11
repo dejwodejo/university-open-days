@@ -6,6 +6,7 @@ import {
   serial,
   timestamp,
   varchar,
+  boolean
 } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator(
@@ -14,19 +15,14 @@ export const createTable = pgTableCreator(
 
 export const userTypeEnum = pgEnum("user_type", ["student", "teacher"]);
 
+export const universityOrganizers = pgEnum("university_organizers", ["Uniwersytet Zielonogórski", "Wydział Matematyki, Informatyki i Ekonometrii", "Wydział Nauk Społecznych", "Wydział Artystyczny", "Collegium Medicum"])
+
 export const authCodes = createTable("auth_codes", {
   id: serial("id").primaryKey(),
   authCode: varchar("auth_code", { length: 6 }).notNull(),
   contact: varchar("contact", { length: 100 }).notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
-
-export const adminPassword = createTable("admin_password", {
-  id: serial("id").primaryKey(),
-  label: varchar("admin_label", { length: 255 }),
-  name: varchar("admin_name", { length: 20 }).unique(),
-  password: varchar("password", { length: 20 })
-})
 
 export const users = createTable("users", {
   id: serial("id").primaryKey(),
@@ -38,6 +34,8 @@ export const users = createTable("users", {
 export const userRelations = relations(users, ({ one }) => ({
   form: one(forms),
 }));
+
+// ======================= Form
 
 export const forms = createTable("forms", {
   id: serial("id").primaryKey(),
@@ -92,6 +90,15 @@ export const schoolRelations = relations(schools, ({ one, many }) => ({
   forms: many(forms),
 }));
 
+// ======================= Page details 
+
+export const pageDetails = createTable("page_details", {
+  title: varchar("title", { length: 255 }),
+  date: timestamp("date"),
+})
+
+// ======================= Map details
+
 export const campuses = createTable("campuses", {
   name: varchar("name", { length: 255 }).primaryKey(),
 });
@@ -111,23 +118,41 @@ export const buildingRelations = relations(buildings, ({ one, many }) => ({
     fields: [buildings.campusName],
     references: [campuses.name],
   }),
-  rooms: many(rooms),
+  floors: many(floors),
 }));
+
+export const floors = createTable("floors", {
+  id: serial("id").primaryKey(),
+  label: varchar("label"),
+  level: integer("level"),
+  isSelected: boolean("isSelected").notNull(),
+  buildingId: integer("building_id").notNull(),
+})
+
+export const floorsRelations = relations(floors, ({ one, many }) => ({
+  building: one(buildings, {
+    fields: [floors.buildingId],
+    references: [buildings.id],
+  }),
+  stands: many(stands),
+  rooms: many(rooms)
+}))
 
 export const rooms = createTable("rooms", {
   id: serial("id").primaryKey(),
   number: varchar("number", { length: 50 }).notNull(),
-  floor: integer("floor").notNull(),
-  buildingId: integer("building_id").notNull(),
+  floorId: integer("floor_id").notNull()
 });
 
 export const roomRelations = relations(rooms, ({ one, many }) => ({
-  building: one(buildings, {
-    fields: [rooms.buildingId],
-    references: [buildings.id],
+  building: one(floors, {
+    fields: [rooms.floorId],
+    references: [floors.id],
   }),
   lectures: many(lectures),
 }));
+
+// ======================= Events 
 
 export const lectureTypeEnum = pgEnum("lecture_type", [
   "interactive",
@@ -167,3 +192,10 @@ export const stands = createTable("stands", {
   location: varchar("location", { length: 255 }).notNull(),
   imageUrl: varchar("image_url", { length: 1000 }).notNull(),
 });
+
+export const divisions = createTable("divisions", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).unique().notNull(),
+  value: varchar("value", { length: 6 }).notNull(),
+  password: varchar("password", { length: 30 }).notNull()
+})

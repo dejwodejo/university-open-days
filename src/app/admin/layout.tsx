@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { playfair_display } from "~/styles/fonts";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="my-5 flex flex-col items-center justify-center">
       <h2
@@ -9,11 +9,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       >
         {"Panel administratora"}
       </h2>
-      <p className="mx-40 mb-6 text-gray-600">
-        {
-          "Wybierz wydział który organizuje Dni Otwarte. Aby się zalogować, użyj hasła podanego każdemu wydziałowi w wiadomości email."
-        }
-      </p>
       {children}
     </div>
   );
