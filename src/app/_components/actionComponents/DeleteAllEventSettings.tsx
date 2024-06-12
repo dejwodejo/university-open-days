@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { useFormState } from "react-dom";
 import { deleteContents } from "~/actions/deleteContents";
 
-export default function DeleteContentsBtn() {
+export default function DeleteAllEventSettings() {
   const [state, action] = useFormState(deleteContents, null);
 
   return (

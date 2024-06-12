@@ -7,8 +7,9 @@ import addLecture from "~/actions/addLecture";
 interface LectureFormProps {
   eventDate: string;
   rooms: {
+    number: string;
     id: number;
-    name: string;
+    floorId: number;
   }[];
 }
 
@@ -89,17 +90,22 @@ export function AddLectureForm({ rooms, eventDate }: LectureFormProps) {
         required
       >
         <option value="">{"Wybierz pomieszczenie"}</option>
-        {rooms.map(({ id, name }) => (
+        {rooms.map(({ id, number }) => (
           <option key={id} value={id}>
-            {name}
+            {"Sala " + number}
           </option>
         ))}
       </select>
 
-      <p aria-live="polite">{state?.message}</p>
+      <p>
+        {state?.errors?.map((issue) => (
+          <p aria-live="polite">- {issue.message}</p>
+        ))}
+      </p>
       <button
         type="submit"
-        className="m-3 w-full rounded-2xl border-2 p-2 shadow-sm duration-300 hover:bg-gray-300"
+        disabled={eventDate === "NIE USTAWIONO"}
+        className={`m-3 mb-10 w-full rounded-2xl border-2 p-2 shadow-sm duration-300 ${eventDate === "NIE USTAWIONO" ? "" : "hover:bg-gray-300"}`}
       >
         {"Dodaj wykład"}
       </button>

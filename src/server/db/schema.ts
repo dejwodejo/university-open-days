@@ -15,8 +15,6 @@ export const createTable = pgTableCreator(
 
 export const userTypeEnum = pgEnum("user_type", ["student", "teacher"]);
 
-export const universityOrganizers = pgEnum("university_organizers", ["Uniwersytet Zielonogórski", "Wydział Matematyki, Informatyki i Ekonometrii", "Wydział Nauk Społecznych", "Wydział Artystyczny", "Collegium Medicum"])
-
 export const authCodes = createTable("auth_codes", {
   id: serial("id").primaryKey(),
   authCode: varchar("auth_code", { length: 6 }).notNull(),
@@ -90,11 +88,15 @@ export const schoolRelations = relations(schools, ({ one, many }) => ({
   forms: many(forms),
 }));
 
-// ======================= Page details 
+// ======================= Page details
+
+export const universityOrganizers = pgEnum("university_organizers", ["Uniwersytet Zielonogórski", "Wydział Matematyki, Informatyki i Ekonometrii", "Wydział Nauk Społecznych", "Wydział Artystyczny", "Collegium Medicum"])
 
 export const pageDetails = createTable("page_details", {
+  id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }),
   date: timestamp("date"),
+  organizer: universityOrganizers("university_organizer"),
 })
 
 // ======================= Map details
@@ -191,7 +193,15 @@ export const stands = createTable("stands", {
   type: standTypeEnum("stand_type").notNull(),
   location: varchar("location", { length: 255 }).notNull(),
   imageUrl: varchar("image_url", { length: 1000 }).notNull(),
+  floorId: integer("floor_id").notNull(),
 });
+
+export const standsRelations = relations(stands, ({ one }) => ({
+  floor: one(floors, {
+    fields: [stands.floorId],
+    references: [floors.id]
+  })
+}))
 
 export const divisions = createTable("divisions", {
   id: serial("id").primaryKey(),
