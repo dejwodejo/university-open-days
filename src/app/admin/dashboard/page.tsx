@@ -77,6 +77,7 @@ export default async function AdminDashboardPage() {
       };
 
   const selectedFloors = await getSelectedFloors();
+  const selectedBuilding = await selectedFloors[0]?.building;
   const availibleRooms = selectedFloors.map((floor) => floor.rooms).flat();
 
   return (
@@ -117,6 +118,15 @@ export default async function AdminDashboardPage() {
       <div className="my-4 rounded bg-white p-4 shadow-md">
         <h2 className="text-lg font-semibold">{"Dodaj miejsce wydarzenia"}</h2>
 
+        <p>{`Wybrany budynek i piętra: ${selectedBuilding ? `${selectedBuilding.campusName}, ${selectedBuilding.name}` : "Brak."}`}</p>
+        {selectedFloors.map(({ label, rooms }) => (
+          <div className="flex flex-row">
+            <p>{`${label}, dostępne sale: `}</p>
+            {rooms.map((room) => (
+              <span className="ml-2">{`${room.number}`}</span>
+            ))}
+          </div>
+        ))}
         <PlaceSelectionForm campuses={sortedPlaces} />
       </div>
 

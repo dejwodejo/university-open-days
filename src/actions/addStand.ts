@@ -19,7 +19,7 @@ export default async function addStand(prevState: any, formData: FormData) {
 
     const { name, description, type, imageUrl, location, floorId } = validatedStandForm.data;
 
-    await db.insert(stands).values({ name, description, type, location, imageUrl, floorId })
+    await db.insert(stands).values({ name, description, type, location, imageUrl, floorId: parseInt(floorId, 10) })
 
     return { message: "Dodano stoisko." }
 }

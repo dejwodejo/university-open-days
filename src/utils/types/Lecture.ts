@@ -7,5 +7,9 @@ export default interface Lecture {
   end: Date;
   authors: string;
   roomId: number;
-  room: { number: string; id: number; floor: number };
+  room: {
+    number: string;
+    id: number;
+    floorId: number;
+  };
 }

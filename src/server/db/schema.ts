@@ -128,6 +128,7 @@ export const floors = createTable("floors", {
   label: varchar("label"),
   level: integer("level"),
   isSelected: boolean("isSelected").notNull(),
+  jsxFloorShape: varchar("jsxFloorShape", { length: 3000 }),
   buildingId: integer("building_id").notNull(),
 })
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { oswald, playfair_display } from "~/styles/fonts";
 import { LoginForm } from "~/app/_components/LoginForm";
+import SecondFloor from "../_components/map/EventMaps";
 
 export default function LoginPage() {
   const [loginWithEmail, setLoginWithEmail] = useState<boolean>(true);

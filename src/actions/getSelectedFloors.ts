@@ -6,7 +6,8 @@ export async function getSelectedFloors() {
     return db.query.floors.findMany({
         where: eq(floors.isSelected, true),
         with: {
-            rooms: true
+            rooms: true,
+            building: true,
         }
     })
 }
