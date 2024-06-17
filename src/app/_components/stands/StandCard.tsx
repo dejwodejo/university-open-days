@@ -28,9 +28,6 @@ export default function StandCard({
           />
           <div className={"flex w-full items-center justify-between"}>
             <p className="text-base">{location}</p>
-            <p className="gray-300 rounded px-9 py-2 text-base shadow-lg hover:bg-gray-300">
-              {"Zobacz na mapie"}
-            </p>
           </div>
         </div>
       </div>

@@ -19,16 +19,22 @@ export default async function HomePage() {
   return (
     <main>
       <div className="container mx-auto px-6 py-4">
-        <div className="flex flex-row">
-          <Link href={"https://wmie.uz.zgora.pl/"}>
-            <a>Przejdź do strony organizatora</a>
+        <div className="flex flex-row justify-center">
+          <Link
+            href={"https://wmie.uz.zgora.pl/"}
+            className="mx-3 my-5 rounded-2xl border-2 border-black px-6 py-3"
+          >
+            {"Przejdź do strony organizatora"}
           </Link>
-          <Link href={"https://rekrutacja.uz.zgora.pl/"}>
-            <a>Przejdź do strony rekrutacji</a>
+          <Link
+            href={"https://rekrutacja.uz.zgora.pl/"}
+            className="mx-3 my-5 rounded-2xl border-2 border-black px-6 py-3"
+          >
+            {"Przejdź do strony rekrutacji"}
           </Link>
         </div>
         <Lectures lectures={lectures} />
-        {/* <Stands stands={stands} /> */}
+        <Stands stands={stands} />
         <EventMaps />
       </div>
     </main>
